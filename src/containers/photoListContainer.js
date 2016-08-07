@@ -1,12 +1,15 @@
 import React from "react";
 import PhotoList from "../components/photoList";
+import 'isomorphic-fetch';
+
 
 class PhotoListContainer extends React.Component {
 
     constructor() {
         super();
         this.state = {
-            photos : ['1', '2', '3', '4']
+            rawPhotos: [],
+            photoThumbnails : ['1', '2', '3', '4']
         }
     }
     //
@@ -16,24 +19,26 @@ class PhotoListContainer extends React.Component {
     // showUserProfile={this.showUserProfile}>
     // <UserProfileContainer {...this.props}/>
 
-    // componentDidMount() {
-    //     fetch('/data/users.js', {
-    //         method: 'get'
-    //     }).then((response) => {
-    //         return response.json()
-    //     }).then((data) => {
-    //         this.setState({users:data})
-    //     }).catch((err)=> {
-    //         console.log(err);
-    //     });
-    // }
+    componentDidMount() {
+        fetch('http://jsonplaceholder.typicode.com/photos', {
+            method: 'get'
+        }).then((response) => {
+            return response.json()
+        }).then((data) => {
+            this.setState({rawPhotos: data});
+            this.setState({photoThumbnails: data.map(entry => entry.thumbnailUrl)})
+        }).catch((err)=> {
+            console.log(err);
+        });
+    }
 
     render() {
-        return (
-          <PhotoList
-            {...this.props} photos={this.state.photos}
-          />
-        )
+      console.log(this.state.rawPhotos)
+      return (
+        <PhotoList
+          {...this.props} photoThumbnails={this.state.photoThumbnails}
+        />
+      )
     }
 }
 

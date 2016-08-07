@@ -2,9 +2,9 @@ import React from "react";
 
 const PhotoList = (props) => (
   <div>
-  {props.photos.map(photo => (
+  {props.photoThumbnails.map(thumbnail => (
     <div>
-      {photo}
+      <img src={thumbnail} />
     </div>
   ))}
   </div>
